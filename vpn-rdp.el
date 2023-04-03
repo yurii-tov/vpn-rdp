@@ -62,7 +62,7 @@
 
 (define-vpn-command connect
   (list "bash" "-c"
-        (format "printf '%s\n' | '%s' -s connect %s && mstsc connect.rdp & sleep 3s ; figlet 'CONNECTED'; echo 'Press [D] to disconnect, [R] to reconnect'"
+        (format "printf '%s\n' | '%s' -s connect %s && mstsc connect.rdp & sleep 3s ; cat connected.txt; echo 'Press [D] to disconnect, [R] to reconnect'"
                 (vpn-helper-credentials-string vpn-password)
                 vpn-cli-exe
                 vpn-server)))
@@ -70,12 +70,12 @@
 
 (define-vpn-command disconnect
   (list "bash" "-c"
-        (format "'%s' disconnect ; figlet 'DISCONNECTED'; echo 'Press [C] to connect'" vpn-cli-exe)))
+        (format "'%s' disconnect ; cat disconnected.txt; echo 'Press [C] to connect'" vpn-cli-exe)))
 
 
 (define-vpn-command reconnect
   (list "bash" "-c"
-        (format "'%s' disconnect ; printf '%s\n' | '%s' -s connect %s && mstsc connect.rdp & sleep 3s ; figlet 'CONNECTED'; echo 'Press [D] to disconnect, [R] to reconnect'"
+        (format "'%s' disconnect ; printf '%s\n' | '%s' -s connect %s && mstsc connect.rdp & sleep 3s ; cat connected.txt; echo 'Press [D] to disconnect, [R] to reconnect'"
                 vpn-cli-exe
                 (vpn-helper-credentials-string vpn-password)
                 vpn-cli-exe

@@ -10,4 +10,3 @@
 ** Pre-requisites
    - Cisco AnyConnect Secure Mobility Client
    - bash
-   - figlet
