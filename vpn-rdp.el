@@ -22,12 +22,23 @@
 (setq vpn-helper-force-login nil)
 
 
+(setq vpn-rdp-wd nil)
+
+
 (defun run-vpn ()
   (interactive)
-  (let* ((vpn-server (read-string "Vpn server: "))
+  (let* ((vpn-server (completing-read "Vpn server: "
+                                      (and (boundp 'vpn-servers-history)
+                                           vpn-servers-history)
+                                      nil
+                                      nil
+                                      nil
+                                      'vpn-servers-history))
          (vpn-password (read-passwd "Vpn Password: "))
          (vpn-buffer (format "*vpn:%s*" vpn-server)))
     (switch-to-buffer vpn-buffer)
+    (when vpn-rdp-wd
+      (cd vpn-rdp-wd))
     (vpn-mode)
     (vpn-disconnect)))
 
@@ -61,25 +72,25 @@
 
 
 (define-vpn-command connect
-  (list "bash" "-c"
-        (format "printf '%s\n' | '%s' -s connect %s && mstsc connect.rdp & sleep 3s ; cat connected.txt; echo 'Press [D] to disconnect, [R] to reconnect'"
-                (vpn-helper-credentials-string vpn-password)
-                vpn-cli-exe
-                vpn-server)))
+                    (list "bash" "-c"
+                          (format "printf '%s\n' | '%s' -s connect %s && mstsc connect.rdp & sleep 3s ; cat connected.txt; echo 'Press [D] to disconnect, [R] to reconnect'"
+                                  (vpn-helper-credentials-string vpn-password)
+                                  vpn-cli-exe
+                                  vpn-server)))
 
 
 (define-vpn-command disconnect
-  (list "bash" "-c"
-        (format "'%s' disconnect ; cat disconnected.txt; echo 'Press [C] to connect'" vpn-cli-exe)))
+                    (list "bash" "-c"
+                          (format "'%s' disconnect ; cat disconnected.txt; echo 'Press [C] to connect'" vpn-cli-exe)))
 
 
 (define-vpn-command reconnect
-  (list "bash" "-c"
-        (format "'%s' disconnect ; printf '%s\n' | '%s' -s connect %s && mstsc connect.rdp & sleep 3s ; cat connected.txt; echo 'Press [D] to disconnect, [R] to reconnect'"
-                vpn-cli-exe
-                (vpn-helper-credentials-string vpn-password)
-                vpn-cli-exe
-                vpn-server)))
+                    (list "bash" "-c"
+                          (format "'%s' disconnect ; printf '%s\n' | '%s' -s connect %s && mstsc connect.rdp & sleep 3s ; cat connected.txt; echo 'Press [D] to disconnect, [R] to reconnect'"
+                                  vpn-cli-exe
+                                  (vpn-helper-credentials-string vpn-password)
+                                  vpn-cli-exe
+                                  vpn-server)))
 
 
 (define-key global-map (kbd "C-c t") 'run-vpn)
