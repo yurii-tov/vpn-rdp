@@ -19,7 +19,7 @@
 (setq vpn-cli-exe "c:/Program Files (x86)/Cisco/Cisco AnyConnect Secure Mobility Client/vpncli.exe")
 
 
-(setq vpn-helper-force-login nil)
+(setq vpn-rdp-force-login nil)
 
 
 (setq vpn-rdp-wd nil)
@@ -45,7 +45,7 @@
 
 (defun vpn-helper-credentials-string (password)
   (format "%s%s\n"
-          (if vpn-helper-force-login "y\n" "")
+          (if vpn-rdp-force-login "y\n" "")
           password))
 
 
