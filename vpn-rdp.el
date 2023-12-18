@@ -12,8 +12,7 @@
 (progn
   (define-key vpn-mode-map (kbd "c") 'vpn-connect)
   (define-key vpn-mode-map (kbd "d") 'vpn-disconnect)
-  (define-key vpn-mode-map (kbd "r") 'vpn-reconnect)
-  (define-key vpn-mode-map (kbd "s") 'vpn-status))
+  (define-key vpn-mode-map (kbd "r") 'vpn-reconnect))
 
 
 (setq vpn-cli-exe "c:/Program Files (x86)/Cisco/Cisco AnyConnect Secure Mobility Client/vpncli.exe")
@@ -66,9 +65,6 @@
                                      (insert (replace-regexp-in-string "" "" string))
                                      (set-marker (process-mark proc) (point)))
                                    (if moving (goto-char (process-mark proc))))))))))
-
-
-(define-vpn-command status (cons vpn-cli-exe '("status")))
 
 
 (define-vpn-command connect
