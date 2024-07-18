@@ -97,7 +97,8 @@
                  vpn-cli-exe
                  (vpn-helper-credentials-string vpn-password)
                  vpn-cli-exe
-                 vpn-server))))
+                 vpn-server)))
+  (setq-local connected t))
 
 
 (define-key global-map (kbd "C-c t") 'run-vpn)
