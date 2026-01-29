@@ -4,16 +4,16 @@
 
 
 (define-derived-mode vpn-mode nil "vpn-helper"
-  (setq-local vpn-buffer vpn-buffer)
-  (setq-local vpn-server vpn-server)
-  (setq-local vpn-password vpn-password)
-  (setq-local connected nil))
+  (setq-local vpn-buffer vpn-buffer
+              vpn-server vpn-server
+              vpn-password vpn-password
+              connected nil))
 
-
-(progn
-  (define-key vpn-mode-map (kbd "c") 'vpn-connect)
-  (define-key vpn-mode-map (kbd "d") 'vpn-disconnect)
-  (define-key vpn-mode-map (kbd "r") 'vpn-reconnect))
+(define-keymap :keymap vpn-mode-map
+  "c" 'vpn-connect
+  "q" 'quit-window
+  "d" 'vpn-disconnect
+  "r" 'vpn-reconnect)
 
 
 (setq vpn-cli-exe "c:/Program Files (x86)/Cisco/Cisco AnyConnect Secure Mobility Client/vpncli.exe")
@@ -27,13 +27,7 @@
 
 (defun run-vpn ()
   (interactive)
-  (let* ((vpn-server (completing-read "Vpn server: "
-                                      (and (boundp 'vpn-servers-history)
-                                           vpn-servers-history)
-                                      nil
-                                      nil
-                                      nil
-                                      'vpn-servers-history))
+  (let* ((vpn-server (read-string "Vpn server: " nil 'vpn-servers-history))
          (vpn-password (read-passwd "Vpn Password: "))
          (vpn-buffer (format "*vpn:%s*" vpn-server)))
     (switch-to-buffer vpn-buffer)
