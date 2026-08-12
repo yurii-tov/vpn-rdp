@@ -16,7 +16,7 @@
   "r" 'vpn-reconnect)
 
 
-(setq vpn-cli-exe "c:/Program Files (x86)/Cisco/Cisco AnyConnect Secure Mobility Client/vpncli.exe")
+(setq vpn-cli-exe "vpncli.exe")
 
 
 (setq vpn-rdp-force-login nil)
