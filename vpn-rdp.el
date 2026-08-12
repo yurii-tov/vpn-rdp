@@ -64,10 +64,10 @@
   (interactive)
   (if connected
       (run-vpn-command
-       (list "bash" "-c"
+       (list shell-file-name "-c"
              "mstsc connect.rdp & cat connected.txt ; echo 'Press [D] to disconnect, [R] to reconnect'"))
     (run-vpn-command
-     (list "bash" "-c"
+     (list shell-file-name "-c"
            (format "printf '%s\n' | '%s' -s connect %s && mstsc connect.rdp & sleep 3s ; cat connected.txt; echo 'Press [D] to disconnect, [R] to reconnect'"
                    (vpn-helper-credentials-string vpn-password)
                    vpn-cli-exe
@@ -78,7 +78,7 @@
 (defun vpn-disconnect ()
   (interactive)
   (run-vpn-command
-   (list "bash" "-c"
+   (list shell-file-name "-c"
          (format "'%s' disconnect ; cat disconnected.txt; echo 'Press [C] to connect'" vpn-cli-exe)))
   (setq-local connected nil))
 
@@ -86,7 +86,7 @@
 (defun vpn-reconnect ()
   (interactive)
   (run-vpn-command
-   (list "bash" "-c"
+   (list shell-file-name "-c"
          (format "'%s' disconnect ; printf '%s\n' | '%s' -s connect %s && mstsc connect.rdp & sleep 3s ; cat connected.txt; echo 'Press [D] to disconnect, [R] to reconnect'"
                  vpn-cli-exe
                  (vpn-helper-credentials-string vpn-password)
